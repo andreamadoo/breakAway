@@ -32,26 +32,19 @@ namespace BreakAway.Controllers
             }
 
             var viewModel = new IndexViewModel();
-
            
             viewModel.FirstName = firstName;
 
             viewModel.LastName = lastName;
 
-
             viewModel.AddDate = addDate;
-
             
             viewModel.ModifiedDate = modifiedDate;
-
-
-
-
-
+     
             viewModel.Contacts = (from contact in _repository.Contacts
                                   select new ContactItem
                                   {
-                                     
+                                      Id = contact.Id,
                                       FirstName = contact.FirstName,
                                       LastName = contact.LastName,
                                       AddDate = contact.AddDate,
@@ -62,7 +55,7 @@ namespace BreakAway.Controllers
 
             if (!string.IsNullOrEmpty(firstName))
             {
-
+           
                 viewModel.Contacts = viewModel.Contacts.Where(i => i.FirstName.Contains(firstName)).ToArray();
                 
             }
@@ -88,13 +81,64 @@ namespace BreakAway.Controllers
 
             }
 
+            return View(viewModel);
+        }
 
+        public ActionResult Edit(int id, string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                ViewBag.message = message;
+            }
 
+            var contact = _repository.Contacts.FirstOrDefault(p => p.Id == id);
+
+            if (contact == null)
+            {
+                return RedirectToAction("Index", "Contact");
+            }
+
+            var viewModel = new EditViewModel
+            {
+                Id = contact.Id,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                AddDate = contact.AddDate,
+                ModifiedDate = contact.ModifiedDate
+            };
 
             return View(viewModel);
         }
 
-        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Edit", "Contact", model);
+            }
+
+            var contact = _repository.Customers.FirstOrDefault(p => p.Id == model.Id);
+
+            if (contact == null)
+            {
+                return RedirectToAction("Index", "Contact", new { message = "Contact with id '" + model.Id + "' was not found" });
+            }
+
+            contact.FirstName = model.FirstName;
+            contact.LastName = model.LastName;
+            contact.AddDate = model.AddDate;
+            contact.ModifiedDate = model.ModifiedDate;
+            
+
+            _repository.Save();
+
+            return RedirectToAction("Edit", "Contact", new { id = contact.Id, message = "Changes saved successfully" });
+        }
+
+
+
     }
 
    

@@ -11,38 +11,33 @@
 
 
 @using (Html.BeginForm("Index", "Contact", FormMethod.Get))
- {
-        <input type="text" name="firstName" value="@Model.FirstName" />
-        <input type="text" name="lastName" value="@Model.LastName" />
-        <input type="text" name="addDate" value="@Model.AddDate"/>
-        <input type="text" name="modifiedDate" value="@Model.ModifiedDate" />
-        <input type="submit" name="submit" />
- }
+{
+    <input type="text" name="firstName" value="@Model.FirstName" />
+    <input type="text" name="lastName" value="@Model.LastName" />
+    <input type="text" name="addDate" value="@Model.AddDate" />
+    <input type="text" name="modifiedDate" value="@Model.ModifiedDate" />
+    <input type="submit" name="submit" />
+}
 
-
-
+Test
 
 
     <table>
         <tr>
+            <th>Edit</th>
             <th>First Name</th>
             <th>Last name</th>
             <th>Add Date</th>
-            <th></th>
-            <th></th>
-            <th></th>
             <th>Modified Date</th>
         </tr>
 
         @foreach (var contact in Model.Contacts)
         {
             <tr>
+                <td>@Html.ActionLink("Details", "Edit", new { id = contact.Id })</td>
                 <td>@contact.FirstName</td>
                 <td>@contact.LastName</td>
                 <td>@contact.AddDate</td>
-                <td></td>
-                <td></td>
-                <td></td>
                 <td>@contact.ModifiedDate</td>
             </tr>
         }

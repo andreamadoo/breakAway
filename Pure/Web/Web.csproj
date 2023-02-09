@@ -170,6 +170,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Installers\DefaultInstaller.cs" />
+    <Compile Include="Models\Contact\EditViewModel.cs" />
     <Compile Include="Models\Contact\IndexViewModel.cs" />
     <Compile Include="Models\Customer\AddViewModel.cs" />
     <Compile Include="Models\Customer\EditViewModel.cs" />
@@ -194,6 +195,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Contact\Index.cshtml" />
+    <Content Include="Views\Contact\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

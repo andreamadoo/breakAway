@@ -33,13 +33,16 @@ namespace BreakAway.Controllers
 
             var viewModel = new IndexViewModel();
 
-            ViewData["firstName"] = firstName;
+           
+            viewModel.FirstName = firstName;
 
-            ViewData["lastName"] = lastName;
+            viewModel.LastName = lastName;
 
-            ViewData["addDate"] = addDate;
 
-            ViewData["modifiedDate"] = modifiedDate;
+            viewModel.AddDate = addDate;
+
+            
+            viewModel.ModifiedDate = modifiedDate;
 
 
 

@@ -10,19 +10,12 @@
 }
 
 
-@{
-    var firstName = (String)ViewData["firstName"];
-    var lastName = (String)ViewData["lastName"];
-    var addDate = (String)ViewData["addDate"];
-    var modifiedDate = (String)ViewData["modifiedDate"];
- }
-
 @using (Html.BeginForm("Index", "Contact", FormMethod.Get))
  {
-        <input type="text" name="firstName" value="@firstName" />
-        <input type="text" name="lastName" value="@lastName" />
-        <input type="text" name="addDate" value="@addDate"/>
-        <input type="text" name="modifiedDate" value="@modifiedDate" />
+        <input type="text" name="firstName" value="@Model.FirstName" />
+        <input type="text" name="lastName" value="@Model.LastName" />
+        <input type="text" name="addDate" value="@Model.AddDate"/>
+        <input type="text" name="modifiedDate" value="@Model.ModifiedDate" />
         <input type="submit" name="submit" />
  }
 

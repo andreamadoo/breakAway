@@ -9,6 +9,11 @@ namespace BreakAway.Models.Contact
     public class IndexViewModel
     {
         public ContactItem[] Contacts { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string AddDate { get; set; }
+        public string ModifiedDate { get; set; }
     }
 
     public class ContactItem

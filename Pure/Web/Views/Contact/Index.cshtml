@@ -1,0 +1,56 @@
+﻿@model BreakAway.Models.Contact.IndexViewModel
+
+@{
+    ViewBag.Title = "Contacts";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.message))
+{
+    <p>@ViewBag.message</p>
+}
+
+
+@{
+    var firstName = (String)ViewData["firstName"];
+    var lastName = (String)ViewData["lastName"];
+    var addDate = (String)ViewData["addDate"];
+    var modifiedDate = (String)ViewData["modifiedDate"];
+ }
+
+@using (Html.BeginForm("Index", "Contact", FormMethod.Get))
+ {
+        <input type="text" name="firstName" value="@firstName" />
+        <input type="text" name="lastName" value="@lastName" />
+        <input type="text" name="addDate" value="@addDate"/>
+        <input type="text" name="modifiedDate" value="@modifiedDate" />
+        <input type="submit" name="submit" />
+ }
+
+
+
+
+
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last name</th>
+            <th>Add Date</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Modified Date</th>
+        </tr>
+
+        @foreach (var contact in Model.Contacts)
+        {
+            <tr>
+                <td>@contact.FirstName</td>
+                <td>@contact.LastName</td>
+                <td>@contact.AddDate</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@contact.ModifiedDate</td>
+            </tr>
+        }
+    </table>

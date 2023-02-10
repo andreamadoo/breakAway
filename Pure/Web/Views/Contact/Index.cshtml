@@ -19,26 +19,26 @@
     <input type="submit" name="submit" />
 }
 
-Test
+@Html.ActionLink("Add a new Contact", "Add", "Contact")
 
 
-    <table>
+<table>
+    <tr>
+        <th>Edit</th>
+        <th>First Name</th>
+        <th>Last name</th>
+        <th>Add Date</th>
+        <th>Modified Date</th>
+    </tr>
+
+    @foreach (var contact in Model.Contacts)
+    {
         <tr>
-            <th>Edit</th>
-            <th>First Name</th>
-            <th>Last name</th>
-            <th>Add Date</th>
-            <th>Modified Date</th>
+            <td>@Html.ActionLink("Details", "Edit", new { id = contact.Id })</td>
+            <td>@contact.FirstName</td>
+            <td>@contact.LastName</td>
+            <td>@contact.AddDate</td>
+            <td>@contact.ModifiedDate</td>
         </tr>
-
-        @foreach (var contact in Model.Contacts)
-        {
-            <tr>
-                <td>@Html.ActionLink("Details", "Edit", new { id = contact.Id })</td>
-                <td>@contact.FirstName</td>
-                <td>@contact.LastName</td>
-                <td>@contact.AddDate</td>
-                <td>@contact.ModifiedDate</td>
-            </tr>
-        }
-    </table>
+    }
+</table>

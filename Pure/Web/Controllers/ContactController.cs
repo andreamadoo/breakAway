@@ -137,6 +137,42 @@ namespace BreakAway.Controllers
             return RedirectToAction("Edit", "Contact", new { id = contact.Id, message = "Changes saved successfully" });
         }
 
+        public ActionResult Add(string message,AddViewModel model)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                ViewBag.message = message;
+            }
+
+
+            return View(model);
+
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Add(AddViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Add", "Contact", new { message = "Contact not created" });
+            }
+
+            var contact = new Contact
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                AddDate = model.AddDate,
+                ModifiedDate = model.ModifiedDate,
+            };
+
+            _repository.Contacts.Add(contact);
+            _repository.Save();
+
+            return RedirectToAction("index", "Contact", new { message = "Contact added successfully" });
+        }
+
 
 
     }

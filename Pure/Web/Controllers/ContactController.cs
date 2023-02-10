@@ -129,7 +129,7 @@ namespace BreakAway.Controllers
             contact.FirstName = model.FirstName;
             contact.LastName = model.LastName;
             contact.AddDate = model.AddDate;
-            contact.ModifiedDate = model.ModifiedDate;
+            contact.ModifiedDate = DateTime.Now;
             
 
             _repository.Save();
@@ -137,13 +137,14 @@ namespace BreakAway.Controllers
             return RedirectToAction("Edit", "Contact", new { id = contact.Id, message = "Changes saved successfully" });
         }
 
-        public ActionResult Add(string message,AddViewModel model)
+        public ActionResult Add(string message)
         {
             if (!string.IsNullOrEmpty(message))
             {
                 ViewBag.message = message;
             }
 
+            var model = new AddViewModel();
 
             return View(model);
 
@@ -163,8 +164,8 @@ namespace BreakAway.Controllers
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                AddDate = model.AddDate,
-                ModifiedDate = model.ModifiedDate,
+                AddDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
             };
 
             _repository.Contacts.Add(contact);

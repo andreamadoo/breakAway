@@ -119,7 +119,7 @@ namespace BreakAway.Controllers
                 return RedirectToAction("Edit", "Contact", model);
             }
 
-            var contact = _repository.Customers.FirstOrDefault(p => p.Id == model.Id);
+            var contact = _repository.Contacts.FirstOrDefault(p => p.Id == model.Id);
 
             if (contact == null)
             {

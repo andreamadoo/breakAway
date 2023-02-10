@@ -28,6 +28,39 @@
             @Html.LabelFor(p => p.AddDate, labelText: "Add Date:")
             @Html.TextBoxFor(p => p.AddDate)
         </div>
+        <div>
+            @foreach (var address in Model.Addresses)
+            {
+            <div>
+                <label for="street1">Street 1 :</label>
+                <input type="text" name="street1" value="@address.Street1" />
+            </div>
+            <div>
+                <label for="street2">Street 2 :</label>
+                <input type="text" name="street2" value="@address.Street2" />
+            </div>
+            <div>
+                <label for="city">City :</label>
+                <input type="text" name="city" value="@address.City" />
+            </div>
+
+            <div>
+                <label for="stateProvince">State Province :</label>
+                <input type="text" name="stateProvince" value="@address.StateProvince" />
+            </div>
+            <div>
+                <label for="postalCode">Postal Code :</label>
+                <input type="text" name="postalCode" value="@address.PostalCode" />
+            </div>
+            <div>
+                <label for="countryRegion">Country Region :</label>
+                <input type="text" name="countryRegion" value="@address.CountryRegion" />
+            </div>
+
+
+
+            }
+        </div>
     </fieldset>
 
     <input type="submit" value="Save" />

@@ -52,6 +52,24 @@ namespace BreakAway.Controllers
                                       
                                   }).ToArray();
 
+            //var contacts = new List<ContactItem>();
+
+            //foreach(var contact in _repository.Contacts)
+            //{
+            //    var c = new ContactItem
+            //    {
+            //        Id = contact.Id,
+            //        FirstName = contact.FirstName,
+            //        LastName = contact.LastName,
+            //        AddDate = contact.AddDate,
+            //        ModifiedDate = contact.ModifiedDate,
+
+            //    };
+            //    contacts.Add(c);
+            //}
+
+            //viewModel.Contacts = contacts.ToArray();
+
 
             if (!string.IsNullOrEmpty(firstName))
             {
@@ -107,12 +125,36 @@ namespace BreakAway.Controllers
                 ModifiedDate = contact.ModifiedDate
             };
 
+            var addresses = new List<AddressModel>();
+
+            foreach (var address in contact.Addresses)
+            {
+                var addressModel = new AddressModel
+                {
+
+                    PostalCode = address.PostalCode,
+                    Street1 = address.Mail.Street1,
+                    Street2 = address.Mail.Street2,
+                    City = address.Mail.City,
+                    StateProvince = address.Mail.StateProvince,
+                    CountryRegion = address.CountryRegion
+                };
+               
+                addresses.Add(addressModel);
+            }
+
+            viewModel.Addresses = addresses;
+
+           
+
             return View(viewModel);
         }
 
+        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditViewModel model)
+        public ActionResult Edit(EditViewModel model/*, AddressModel addressModel*/)
         {
             if (!ModelState.IsValid)
             {
@@ -130,7 +172,16 @@ namespace BreakAway.Controllers
             contact.LastName = model.LastName;
             contact.AddDate = model.AddDate;
             contact.ModifiedDate = DateTime.Now;
-            
+
+
+            //var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
+
+            //address.Mail.Street1 = addressModel.Street1;
+            //address.Mail.Street2 = addressModel.Street2;
+            //address.Mail.City = addressModel.City;
+            //address.PostalCode = addressModel.PostalCode;
+            //address.CountryRegion = addressModel.CountryRegion;
+            //address.Mail.StateProvince = addressModel.StateProvince;
 
             _repository.Save();
 
@@ -173,6 +224,7 @@ namespace BreakAway.Controllers
 
             return RedirectToAction("index", "Contact", new { message = "Contact added successfully" });
         }
+
 
 
 

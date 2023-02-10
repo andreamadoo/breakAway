@@ -267,7 +267,7 @@ namespace BreakAway.Entities
 
             entity.Property(k => k.ModifiedDate).HasColumnType("DATETIME");
 
-            entity.Property(k => k.RowVersion).HasColumnName("TimeStamp").IsRowVersion();
+            entity.Property(k => k.RowVersion).HasColumnName("RowVersion").IsRowVersion();
 
             entity.HasRequired(k => k.Contact).WithMany(c => c.Addresses).HasForeignKey(k => k.ContactId);
         }

@@ -170,6 +170,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Installers\DefaultInstaller.cs" />
+    <Compile Include="Models\Contact\AddressModel.cs" />
     <Compile Include="Models\Contact\AddViewModel.cs" />
     <Compile Include="Models\Contact\EditViewModel.cs" />
     <Compile Include="Models\Contact\IndexViewModel.cs" />

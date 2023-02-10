@@ -23,6 +23,7 @@ namespace BreakAway.Models.Contact
         public string LastName { get; set; }
         public DateTime AddDate { get; set; }
         public DateTime ModifiedDate { get; set; }
-        
+        public IList<AddressModel> Addresses { get; set; }
+
     }
 }

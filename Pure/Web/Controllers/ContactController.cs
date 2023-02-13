@@ -131,7 +131,7 @@ namespace BreakAway.Controllers
             {
                 var addressModel = new AddressModel
                 {
-
+                    Id = address.Id,
                     PostalCode = address.PostalCode,
                     Street1 = address.Mail.Street1,
                     Street2 = address.Mail.Street2,
@@ -154,7 +154,7 @@ namespace BreakAway.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditViewModel model/*, AddressModel addressModel*/)
+        public ActionResult Edit(EditViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -173,15 +173,21 @@ namespace BreakAway.Controllers
             contact.AddDate = model.AddDate;
             contact.ModifiedDate = DateTime.Now;
 
+            foreach (var addressModel in model.Addresses)
+            {
 
-            //var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
+                var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
 
-            //address.Mail.Street1 = addressModel.Street1;
-            //address.Mail.Street2 = addressModel.Street2;
-            //address.Mail.City = addressModel.City;
-            //address.PostalCode = addressModel.PostalCode;
-            //address.CountryRegion = addressModel.CountryRegion;
-            //address.Mail.StateProvince = addressModel.StateProvince;
+                address.Mail.Street1 = addressModel.Street1;
+                address.Mail.Street2 = addressModel.Street2;
+                address.Mail.City = addressModel.City;
+                address.PostalCode = addressModel.PostalCode;
+                address.CountryRegion = addressModel.CountryRegion;
+                address.Mail.StateProvince = addressModel.StateProvince;
+
+            }
+
+            
 
             _repository.Save();
 
@@ -210,15 +216,18 @@ namespace BreakAway.Controllers
             {
                 return RedirectToAction("Add", "Contact", new { message = "Contact not created" });
             }
+            
 
             var contact = new Contact
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 AddDate = DateTime.Now,
-                ModifiedDate = DateTime.Now
+                ModifiedDate = DateTime.Now,
             };
 
+
+            
             _repository.Contacts.Add(contact);
             _repository.Save();
 

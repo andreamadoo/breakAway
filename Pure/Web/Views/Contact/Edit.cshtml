@@ -5,17 +5,21 @@
 }
 @Html.ActionLink("Back to contact list", "Index")
 
+
 @if (!string.IsNullOrEmpty(ViewBag.message))
 {
     <p style="font-style:italic">@ViewBag.message</p>
 }
+
+
+
 
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(p => p.Id);
     @Html.AntiForgeryToken();
     <fieldset>
-        <legend>Customer Information</legend>
+        <legend>Contact Information</legend>
         <div>
             @Html.LabelFor(p => p.FirstName, labelText: "First name:")
             @Html.TextBoxFor(p => p.FirstName)
@@ -29,39 +33,75 @@
             @Html.TextBoxFor(p => p.AddDate)
         </div>
         <div>
-            @foreach (var address in Model.Addresses)
+            @for (var i = 0; i < Model.Addresses.Count; i++)
             {
-            <div>
-                <label for="street1">Street 1 :</label>
-                <input type="text" name="street1" value="@address.Street1" />
-            </div>
-            <div>
-                <label for="street2">Street 2 :</label>
-                <input type="text" name="street2" value="@address.Street2" />
-            </div>
-            <div>
-                <label for="city">City :</label>
-                <input type="text" name="city" value="@address.City" />
-            </div>
+                var address = Model.Addresses[i];
 
-            <div>
-                <label for="stateProvince">State Province :</label>
-                <input type="text" name="stateProvince" value="@address.StateProvince" />
-            </div>
-            <div>
-                <label for="postalCode">Postal Code :</label>
-                <input type="text" name="postalCode" value="@address.PostalCode" />
-            </div>
-            <div>
-                <label for="countryRegion">Country Region :</label>
-                <input type="text" name="countryRegion" value="@address.CountryRegion" />
-            </div>
+                <input type="hidden" name="Addresses[@i].Id" value="@address.Id" />
+                <div>
+                    <label for="Addresses[@i].Street1">Street 1 :</label>
+                    <input type="text" name="Addresses[@i].Street1" value="@address.Street1" />
+                </div>
+                <div>
+                    <label for="Addresses[@i].Street2">Street 2 :</label>
+                    <input type="text" name="Addresses[@i].Street2" value="@address.Street2" />
+                </div>
+                <div>
+                    <label for="Addresses[@i].City">City :</label>
+                    <input type="text" name="Addresses[@i].City" value="@address.City" />
+                </div>
 
-
-
+                <div>
+                    <label for="Addresses[@i].StateProvince">State Province :</label>
+                    <input type="text" name="Addresses[@i].StateProvince" value="@address.StateProvince" />
+                </div>
+                <div>
+                    <label for="Addresses[@i].PostalCode">Postal Code :</label>
+                    <input type="text" name="Addresses[@i].PostalCode" value="@address.PostalCode" />
+                </div>
+                <div>
+                    <label for="Addresses[@i].CountryRegion">Country Region :</label>
+                    <input type="text" name="Addresses[@i].CountryRegion" value="@address.CountryRegion" />
+                </div>
             }
+
+
+
+
         </div>
+
+        <div>
+            <input id="button" name="button" type="button" value="Add Address" onclick="addAddress()" />
+            <div id="fields"></div>
+        </div>
+
+
     </fieldset>
+
 
     <input type="submit" value="Save" />
 }
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function addAddress() {
+                var $fields = $('#fields');
+                $('<label for="dynamicStreet1 name="labeldynamicStreet1" />Street1 :</>').appendTo($fields);
+                $('<input type="text" name="dynamicStreet1" /><br/>').appendTo($fields);
+                $('<label for="dynamicStreet2 name="labeldynamicStreet2" />Street2 :</>').appendTo($fields);
+                $('<input type="text" name="dynamicStreet2" /><br/>').appendTo($fields);
+                $('<label for="dynamicCity name="labeldynamicCity" />City : :</>').appendTo($fields);
+                $('<input type="text" name="dynamicCity" /><br/>').appendTo($fields);
+                $('<label for="dynamicStateProvince name="labeldynamicStateProvince" />State Province :</>').appendTo($fields);
+                $('<input type="text" name="dynamicStateProvince" /><br/>').appendTo($fields);
+                $('<label for="dynamicPostalCode name="labeldynamicPostalCode" />Postal Code :</>').appendTo($fields);
+                $('<input type="text" name="dynamicPostalCode" /><br/>').appendTo($fields);
+                $('<label for="DynamicCountryRegion name="labelDynamicCountryRegion" />Country Region :</>').appendTo($fields);
+                $('<input type="text" name="DynamicCountryRegion" /><br/>').appendTo($fields);
+                console.log("Hello");
+            }
+    
+
+ </script>
+

@@ -32,36 +32,40 @@
             @Html.LabelFor(p => p.AddDate, labelText: "Add Date:")
             @Html.TextBoxFor(p => p.AddDate)
         </div>
-        <div>
+        <div class="form">
             @for (var i = 0; i < Model.Addresses.Count; i++)
             {
                 var address = Model.Addresses[i];
 
-                <input type="hidden" name="Addresses[@i].Id" value="@address.Id" />
+                <input type="hidden" name="Addresses[@i].Id" value="@address.Id" class="id" />
+                <div>
+                    <label for="Addresses[@i].AddressType">Address Type :</label>
+                    <input type="text" name="Addresses[@i].AddressType" value="@address.AddressType" class="address-type" />
+                </div>
                 <div>
                     <label for="Addresses[@i].Street1">Street 1 :</label>
-                    <input type="text" name="Addresses[@i].Street1" value="@address.Street1" />
+                    <input type="text" name="Addresses[@i].Street1" value="@address.Street1" class="street1" />
                 </div>
                 <div>
                     <label for="Addresses[@i].Street2">Street 2 :</label>
-                    <input type="text" name="Addresses[@i].Street2" value="@address.Street2" />
+                    <input type="text" name="Addresses[@i].Street2" value="@address.Street2" class="street2" />
                 </div>
                 <div>
                     <label for="Addresses[@i].City">City :</label>
-                    <input type="text" name="Addresses[@i].City" value="@address.City" />
+                    <input type="text" name="Addresses[@i].City" value="@address.City" class="city" />
                 </div>
 
                 <div>
                     <label for="Addresses[@i].StateProvince">State Province :</label>
-                    <input type="text" name="Addresses[@i].StateProvince" value="@address.StateProvince" />
+                    <input type="text" name="Addresses[@i].StateProvince" value="@address.StateProvince" class="stateprovince" />
                 </div>
                 <div>
                     <label for="Addresses[@i].PostalCode">Postal Code :</label>
-                    <input type="text" name="Addresses[@i].PostalCode" value="@address.PostalCode" />
+                    <input type="text" name="Addresses[@i].PostalCode" value="@address.PostalCode" class="postalcode" />
                 </div>
                 <div>
                     <label for="Addresses[@i].CountryRegion">Country Region :</label>
-                    <input type="text" name="Addresses[@i].CountryRegion" value="@address.CountryRegion" />
+                    <input type="text" name="Addresses[@i].CountryRegion" value="@address.CountryRegion" class="countryregion" />
                 </div>
             }
 
@@ -86,22 +90,93 @@
 <script type="text/javascript">
 
     function addAddress() {
-                var $fields = $('#fields');
-                $('<label for="dynamicStreet1 name="labeldynamicStreet1" />Street1 :</>').appendTo($fields);
-                $('<input type="text" name="dynamicStreet1" /><br/>').appendTo($fields);
-                $('<label for="dynamicStreet2 name="labeldynamicStreet2" />Street2 :</>').appendTo($fields);
-                $('<input type="text" name="dynamicStreet2" /><br/>').appendTo($fields);
-                $('<label for="dynamicCity name="labeldynamicCity" />City : :</>').appendTo($fields);
-                $('<input type="text" name="dynamicCity" /><br/>').appendTo($fields);
-                $('<label for="dynamicStateProvince name="labeldynamicStateProvince" />State Province :</>').appendTo($fields);
-                $('<input type="text" name="dynamicStateProvince" /><br/>').appendTo($fields);
-                $('<label for="dynamicPostalCode name="labeldynamicPostalCode" />Postal Code :</>').appendTo($fields);
-                $('<input type="text" name="dynamicPostalCode" /><br/>').appendTo($fields);
-                $('<label for="DynamicCountryRegion name="labelDynamicCountryRegion" />Country Region :</>').appendTo($fields);
-                $('<input type="text" name="DynamicCountryRegion" /><br/>').appendTo($fields);
-                console.log("Hello");
-            }
-    
+
+        var elements = document.getElementsByClassName("id")
+        var count = elements.length
+
+        var newAddressTypeLabel = document.createElement("label")
+        var newStreet1Label = document.createElement("label")
+        var newStreet2Label = document.createElement("label")
+        var newCityLabel = document.createElement("label")
+        var newStateProvinceLabel = document.createElement("label")
+        var newPostalCodeLabel = document.createElement("label")
+        var newCountryRegionLabel = document.createElement("label")
+
+        var newAddressTypeInput = document.createElement("input")
+        var newStreet1Input = document.createElement("input")
+        var newStreet2Input = document.createElement("input")
+        var newCityInput = document.createElement("input")
+        var newStateProvinceInput = document.createElement("input")
+        var newPostalCodeInput = document.createElement("input")
+        var newCountryRegionInput = document.createElement("input")
+
+        newAddressTypeLabel.setAttribute("for", "Addresses[ " + count + "].AddressType")
+        newStreet1Label.setAttribute("for", "Addresses[ " + count + "].Street1")
+        newStreet2Label.setAttribute("for", "Addresses[" + count + "].Street2")
+        newCityLabel.setAttribute("for", "Addresses[" + count + "].City")
+        newStateProvinceLabel.setAttribute("for", "Addresses[" + count + "].StateProvince")
+        newPostalCodeLabel.setAttribute("for", "Addresses[" + count + "].PostalCode")
+        newCountryRegionLabel.setAttribute("for", "Addresses[" + count + "].CountryRegion")
+
+        newAddressTypeLabel.innerHTML = "Address Type :"
+        newStreet1Label.innerHTML = "Street 1 :"
+        newStreet2Label.innerHTML = "Street 2 :"
+        newCityLabel.innerHTML = "City :"
+        newStateProvinceLabel.innerHTML = "State Province :"
+        newPostalCodeLabel.innerHTML = "Postal Code :"
+        newCountryRegionLabel.innerHTML = "Country Region :"
+
+
+        newAddressTypeInput.setAttribute("class", "address-type")
+        newStreet1Input.setAttribute("class", "street1")
+        newStreet2Input.setAttribute("class", "street2")
+        newCityInput.setAttribute("class", "city")
+        newStateProvinceInput.setAttribute("class", "stateprovince")
+        newPostalCodeInput.setAttribute("class", "postalcode")
+        newCountryRegionInput.setAttribute("class", "countryregion")
+
+        newAddressTypeInput.setAttribute("name", "Addresses[" + count + "].AddressType")
+        newStreet1Input.setAttribute("name", "Addresses[" + count + "].Street1")
+        newStreet2Input.setAttribute("name", "Addresses[" + count + "].Street2")
+        newCityInput.setAttribute("name", "Addresses[" + count + "].City")
+        newStateProvinceInput.setAttribute("name", "Addresses[" + count + "].StateProvince")
+        newPostalCodeInput.setAttribute("name", "Addresses[" + count + "].PostalCode")
+        newCountryRegionInput.setAttribute("name", "Addresses[" + count + "].CountryRegion")
+
+        newAddressTypeInput.setAttribute("type", "text")
+        newStreet1Input.setAttribute("type", "text")
+        newStreet2Input.setAttribute("type", "text")
+        newCityInput.setAttribute("type", "text")
+        newStateProvinceInput.setAttribute("type", "text")
+        newPostalCodeInput.setAttribute("type", "text")
+        newCountryRegionInput.setAttribute("type", "text")
+
+        document.getElementsByClassName("form")[0].append(newAddressTypeLabel)
+        document.getElementsByClassName("form")[0].append(newAddressTypeInput)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].append(newStreet1Label)
+        document.getElementsByClassName("form")[0].append(newStreet1Input)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].append(newStreet2Label)
+        document.getElementsByClassName("form")[0].append(newStreet2Input)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].append(newCityLabel)
+        document.getElementsByClassName("form")[0].append(newCityInput)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].append(newStateProvinceLabel)
+        document.getElementsByClassName("form")[0].append(newStateProvinceInput)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].append(newPostalCodeLabel)
+        document.getElementsByClassName("form")[0].append(newPostalCodeInput)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].append(newCountryRegionLabel)
+        document.getElementsByClassName("form")[0].append(newCountryRegionInput)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+
+        console.log(count);
+  
+    }
+  
 
  </script>
 

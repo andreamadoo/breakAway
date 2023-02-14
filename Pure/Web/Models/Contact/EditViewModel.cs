@@ -18,6 +18,7 @@ namespace BreakAway.Models.Contact
 
         public DateTime ModifiedDate { get; set; }
 
+
         public IList<AddressModel> Addresses { get; set; }
         
     }

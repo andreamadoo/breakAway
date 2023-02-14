@@ -21,6 +21,8 @@ namespace BreakAway.Models.Contact
 
         public string CountryRegion { get; set; }
 
+        public string AddressType { get; set; }
+
         public string PostalCode { get; set; }
     }
 

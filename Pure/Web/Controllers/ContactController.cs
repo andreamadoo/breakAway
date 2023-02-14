@@ -137,7 +137,8 @@ namespace BreakAway.Controllers
                     Street2 = address.Mail.Street2,
                     City = address.Mail.City,
                     StateProvince = address.Mail.StateProvince,
-                    CountryRegion = address.CountryRegion
+                    CountryRegion = address.CountryRegion,
+                    AddressType = address.AddressType
                 };
                
                 addresses.Add(addressModel);
@@ -173,10 +174,22 @@ namespace BreakAway.Controllers
             contact.AddDate = model.AddDate;
             contact.ModifiedDate = DateTime.Now;
 
+
+
             foreach (var addressModel in model.Addresses)
             {
 
                 var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
+
+                if (address == null)
+                {
+                    address = new Address
+                    {
+                        Mail = new Mail ()
+                    };
+
+                    contact.Addresses.Add(address);
+                }
 
                 address.Mail.Street1 = addressModel.Street1;
                 address.Mail.Street2 = addressModel.Street2;
@@ -184,6 +197,13 @@ namespace BreakAway.Controllers
                 address.PostalCode = addressModel.PostalCode;
                 address.CountryRegion = addressModel.CountryRegion;
                 address.Mail.StateProvince = addressModel.StateProvince;
+                address.AddressType = addressModel.AddressType;
+                address.ModifiedDate = DateTime.Now;
+
+                if (address.AddressType == null)
+                {
+                    return RedirectToAction("Edit", "Contact", new { message = " The Address Type is required!" });
+                }
 
             }
 

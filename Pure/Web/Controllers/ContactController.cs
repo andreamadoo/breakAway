@@ -157,49 +157,61 @@ namespace BreakAway.Controllers
             contact.AddDate = model.AddDate;
             contact.ModifiedDate = DateTime.Now;
 
-
-
-            foreach (var addressModel in model.Addresses)
-            {
-
-                var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
-
-                if (address == null)
+                foreach (var addressModel in model.Addresses)
                 {
-                    address = new Address
+
+                    var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
+
+                    if (address == null)
                     {
-                        Mail = new Mail ()
-                    };
+                        address = new Address
+                        {
+                            Mail = new Mail()
+                        };
 
-                    contact.Addresses.Add(address);
+                        contact.Addresses.Add(address);
+                    }
+
+                    address.Mail.Street1 = addressModel.Street1;
+                    address.Mail.Street2 = addressModel.Street2;
+                    address.Mail.City = addressModel.City;
+                    address.PostalCode = addressModel.PostalCode;
+                    address.CountryRegion = addressModel.CountryRegion;
+                    address.Mail.StateProvince = addressModel.StateProvince;
+                    address.AddressType = addressModel.AddressType;
+                    address.ModifiedDate = DateTime.Now;
+
+
+
+                    if (address.AddressType == null)
+                    {
+                        return RedirectToAction("Edit", "Contact", new { message = " The Address Type is required!" });
+                    }
+
                 }
 
-                address.Mail.Street1 = addressModel.Street1;
-                address.Mail.Street2 = addressModel.Street2;
-                address.Mail.City = addressModel.City;
-                address.PostalCode = addressModel.PostalCode;
-                address.CountryRegion = addressModel.CountryRegion;
-                address.Mail.StateProvince = addressModel.StateProvince;
-                address.AddressType = addressModel.AddressType;
-                address.ModifiedDate = DateTime.Now;
-
-                if (address.AddressType == null && address.Mail.Street1 == null && address.Mail.Street2 == null
-                    && address.Mail.City == null && address.PostalCode == null && address.CountryRegion == null
-                    && address.Mail.StateProvince == null)
+            var contactAddresses = contact.Addresses.ToArray();
+            foreach (var realAddress in contactAddresses)
+            {
+                foreach (var addressModel in model.Addresses)
                 {
-                    contact.Addresses.Remove(address);
-                }
+                    var address = model.Addresses.FirstOrDefault(p => p.Id == realAddress.Id);
 
-                if (address.AddressType == null)
-                {
-                    return RedirectToAction("Edit", "Contact", new { message = " The Address Type is required!" });
-                }
+                    Console.WriteLine(realAddress.Id);
 
+
+                    if (address == null)
+                    {
+                        _repository.Addresses.Delete(realAddress);
+                    }
+
+                }
             }
 
-            
 
-            _repository.Save();
+
+
+                    _repository.Save();
 
             return RedirectToAction("Edit", "Contact", new { id = contact.Id, message = "Changes saved successfully" });
         }

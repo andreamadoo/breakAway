@@ -12,6 +12,9 @@
 }
 
 
+@*PROBLEM WITH INDEXES ITS DELETING THE LAST ALWAYS*@
+
+
 
 
 @using (Html.BeginForm())
@@ -37,41 +40,44 @@
             {
                 var address = Model.Addresses[i];
 
+            <div id="@(i)" class="wrap-div">
+
+
                 <input type="hidden" name="Addresses[@i].Id" value="@address.Id" class="id" />
-                <div>
-                    <label for="Addresses[@i].AddressType" id="@address.Id" >Address Type :</label>
-                    <input type="text" name="Addresses[@i].AddressType" value="@address.AddressType" id="@address.Id" class="address-type" />
+                <div class="wrap-address-type">
+                    <label for="Addresses[@i].AddressType">Address Type :</label>
+                    <input type="text" name="Addresses[@i].AddressType" value="@address.AddressType" class="address-type" />
                 </div>
-                <div>
-                    <label for="Addresses[@i].Street1" id="@address.Id" >Street 1 :</label>
-                    <input type="text" name="Addresses[@i].Street1" value="@address.Street1" id="@address.Id" class="street1" />
+                <div class="wrap-address-street1">
+                    <label for="Addresses[@i].Street1">Street 1 :</label>
+                    <input type="text" name="Addresses[@i].Street1" value="@address.Street1"  class="street1" />
                 </div>
-                <div>
-                    <label for="Addresses[@i].Street2" id="@address.Id" >Street 2 :</label>
-                    <input type="text" name="Addresses[@i].Street2" value="@address.Street2" id="@address.Id" class="street2" />
+                <div class="wrap-address-street2">
+                    <label for="Addresses[@i].Street2">Street 2 :</label>
+                    <input type="text" name="Addresses[@i].Street2" value="@address.Street2"  class="street2" />
                 </div>
-                <div>
-                    <label for="Addresses[@i].City" id="@address.Id" >City :</label>
-                    <input type="text" name="Addresses[@i].City" value="@address.City" id="@address.Id" class="city" />
+                <div class="wrap-city">
+                    <label for="Addresses[@i].City">City :</label>
+                    <input type="text" name="Addresses[@i].City" value="@address.City"  class="city" />
                 </div>
 
-                <div>
-                    <label for="Addresses[@i].StateProvince" id="@address.Id" >State Province :</label>
-                    <input type="text" name="Addresses[@i].StateProvince" value="@address.StateProvince" id="@address.Id" class="stateprovince" />
+                <div class="wrap-state-province">
+                    <label for="Addresses[@i].StateProvince">State Province :</label>
+                    <input type="text" name="Addresses[@i].StateProvince" value="@address.StateProvince"  class="stateprovince" />
                 </div>
-                <div>
-                    <label for="Addresses[@i].PostalCode" id="@address.Id" >Postal Code :</label>
-                    <input type="text" name="Addresses[@i].PostalCode" value="@address.PostalCode" id="@address.Id" class="postalcode" />
+                <div class="wrap-postal-code">
+                    <label for="Addresses[@i].PostalCode">Postal Code :</label>
+                    <input type="text" name="Addresses[@i].PostalCode" value="@address.PostalCode" class="postalcode" />
                 </div>
-                <div>
-                    <label for="Addresses[@i].CountryRegion" id="@address.Id" >Country Region :</label>
-                    <input type="text" name="Addresses[@i].CountryRegion" value="@address.CountryRegion" id="@address.Id" class="countryregion" />
+                <div class="wrap-country-region">
+                    <label for="Addresses[@i].CountryRegion">Country Region :</label>
+                    <input type="text" name="Addresses[@i].CountryRegion" value="@address.CountryRegion" class="countryregion" />
                 </div>
-                
-                <div>
-                    <input type="button" name="delete" value="Delete this Address &#8593" class="delete-button" id="@address.Id" onclick="removeAddress('@address.Id')" />
+
+                <div class="wrap-delete-button">
+                    <input type="button" name="delete" value="Delete this Address &#8593" class="delete-button" onclick="removeAddress(@(i))" />
                 </div>
-                
+            </div>
 
             }
 
@@ -97,10 +103,11 @@
 
     function addAddress() {
 
-        var elements = document.getElementsByClassName("id")
+        var elements = document.getElementsByClassName("address-type")
         var count = elements.length;
         var upArrow = '\u2191';
 
+        
         var newAddressTypeLabel = document.createElement("label")
         var newStreet1Label = document.createElement("label")
         var newStreet2Label = document.createElement("label")
@@ -109,6 +116,7 @@
         var newPostalCodeLabel = document.createElement("label")
         var newCountryRegionLabel = document.createElement("label")
 
+        var newAddressIdInput = document.createElement("input")
         var newAddressTypeInput = document.createElement("input")
         var newStreet1Input = document.createElement("input")
         var newStreet2Input = document.createElement("input")
@@ -117,6 +125,16 @@
         var newPostalCodeInput = document.createElement("input")
         var newCountryRegionInput = document.createElement("input")
         var newButtonDeleteInput = document.createElement("input")
+        var innerDiv = document.createElement("div")
+        var wrapAddressType = document.createElement("div")
+        var wrapStreet1 = document.createElement("div")
+        var wrapStreet2 = document.createElement("div")
+        var wrapCity = document.createElement("div")
+        var wrapStateProvince = document.createElement("div")
+        var wrapPostalCode = document.createElement("div")
+        var wrapCountryRegion = document.createElement("div")
+        var wrapDeleteButton = document.createElement("div")
+
 
         newAddressTypeLabel.setAttribute("for", "Addresses[ " + count + "].AddressType")
         newStreet1Label.setAttribute("for", "Addresses[ " + count + "].Street1")
@@ -137,6 +155,7 @@
 
 
 
+        newAddressIdInput.setAttribute("class", "id")
         newAddressTypeInput.setAttribute("class", "address-type")
         newStreet1Input.setAttribute("class", "street1")
         newStreet2Input.setAttribute("class", "street2")
@@ -146,6 +165,7 @@
         newCountryRegionInput.setAttribute("class", "countryregion")
         newButtonDeleteInput.setAttribute("class", "delete-button")
 
+        newAddressIdInput.setAttribute("name", "Addresses[" + count + "].Id")
         newAddressTypeInput.setAttribute("name", "Addresses[" + count + "].AddressType")
         newStreet1Input.setAttribute("name", "Addresses[" + count + "].Street1")
         newStreet2Input.setAttribute("name", "Addresses[" + count + "].Street2")
@@ -155,6 +175,18 @@
         newCountryRegionInput.setAttribute("name", "Addresses[" + count + "].CountryRegion")
         newButtonDeleteInput.setAttribute("name", "delete")
 
+        innerDiv.setAttribute("id", count)
+        innerDiv.setAttribute("class", "wrap-div")
+        wrapAddressType.setAttribute("class", "wrap-address-type")
+        wrapStreet1.setAttribute("class", "wrap-address-street1")
+        wrapStreet2.setAttribute("class", "wrap-address-street2")
+        wrapCity.setAttribute("class", "wrap-city")
+        wrapStateProvince.setAttribute("class", "wrap-state-province")
+        wrapPostalCode.setAttribute("class", "wrap-postal-code")
+        wrapCountryRegion.setAttribute("class", "wrap-country-region")
+        wrapDeleteButton.setAttribute("class", "wrap-delete-button")
+
+        newAddressIdInput.setAttribute("type","hidden")
         newAddressTypeInput.setAttribute("type", "text")
         newStreet1Input.setAttribute("type", "text")
         newStreet2Input.setAttribute("type", "text")
@@ -163,34 +195,43 @@
         newPostalCodeInput.setAttribute("type", "text")
         newCountryRegionInput.setAttribute("type", "text")
         newButtonDeleteInput.setAttribute("type", "button")
-        newButtonDeleteInput.setAttribute("value", "Delete this Address " + upArrow )
+        newButtonDeleteInput.setAttribute("value", "Delete this Address " + upArrow)
+        newButtonDeleteInput.setAttribute("onclick", "removeAddress(" + count + " )" )
 
 
-        document.getElementsByClassName("form")[0].append(newAddressTypeLabel)
-        document.getElementsByClassName("form")[0].append(newAddressTypeInput)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
-        document.getElementsByClassName("form")[0].append(newStreet1Label)
-        document.getElementsByClassName("form")[0].append(newStreet1Input)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
-        document.getElementsByClassName("form")[0].append(newStreet2Label)
-        document.getElementsByClassName("form")[0].append(newStreet2Input)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
-        document.getElementsByClassName("form")[0].append(newCityLabel)
-        document.getElementsByClassName("form")[0].append(newCityInput)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
-        document.getElementsByClassName("form")[0].append(newStateProvinceLabel)
-        document.getElementsByClassName("form")[0].append(newStateProvinceInput)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
-        document.getElementsByClassName("form")[0].append(newPostalCodeLabel)
-        document.getElementsByClassName("form")[0].append(newPostalCodeInput)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
-        document.getElementsByClassName("form")[0].append(newCountryRegionLabel)
-        document.getElementsByClassName("form")[0].append(newCountryRegionInput)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
-        document.getElementsByClassName("form")[0].append(newButtonDeleteInput)
-        document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].appendChild(innerDiv)
+        innerDiv.append(wrapAddressType)
+        wrapAddressType.append(newAddressTypeLabel)
+        wrapAddressType.append(newAddressTypeInput)
 
-        console.log(count);
+        innerDiv.append(wrapStreet1)
+        wrapStreet1.append(newStreet1Label)
+        wrapStreet1.append(newStreet1Input)
+
+        innerDiv.append(wrapStreet2)
+        wrapStreet2.append(newStreet2Label)
+        wrapStreet2.append(newStreet2Input)
+
+        innerDiv.append(wrapCity)
+        wrapCity.append(newCityLabel)
+        wrapCity.append(newCityInput)
+
+        innerDiv.append(wrapStateProvince)
+        wrapStateProvince.append(newStateProvinceLabel)
+        wrapStateProvince.append(newStateProvinceInput)
+
+        innerDiv.append(wrapPostalCode)
+        wrapPostalCode.append(newPostalCodeLabel)
+        wrapPostalCode.append(newPostalCodeInput)
+
+        innerDiv.append(wrapCountryRegion)
+        wrapCountryRegion.append(newCountryRegionLabel)
+        wrapCountryRegion.append(newCountryRegionInput)
+
+
+        innerDiv.append(wrapDeleteButton)
+        wrapDeleteButton.append(newButtonDeleteInput)
+        
         
 
     }
@@ -202,25 +243,10 @@
 
     function removeAddress(id) {
 
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
-        document.getElementById(id).remove();
 
-        
-
-        
+        document.getElementById(id).remove();
+   
+   
         console.log(id);
        
     }

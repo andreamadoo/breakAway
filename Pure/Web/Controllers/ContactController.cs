@@ -51,24 +51,7 @@ namespace BreakAway.Controllers
                                       ModifiedDate = contact.ModifiedDate,
                                       
                                   }).ToArray();
-
-            //var contacts = new List<ContactItem>();
-
-            //foreach(var contact in _repository.Contacts)
-            //{
-            //    var c = new ContactItem
-            //    {
-            //        Id = contact.Id,
-            //        FirstName = contact.FirstName,
-            //        LastName = contact.LastName,
-            //        AddDate = contact.AddDate,
-            //        ModifiedDate = contact.ModifiedDate,
-
-            //    };
-            //    contacts.Add(c);
-            //}
-
-            //viewModel.Contacts = contacts.ToArray();
+    
 
 
             if (!string.IsNullOrEmpty(firstName))
@@ -199,6 +182,13 @@ namespace BreakAway.Controllers
                 address.Mail.StateProvince = addressModel.StateProvince;
                 address.AddressType = addressModel.AddressType;
                 address.ModifiedDate = DateTime.Now;
+
+                if (address.AddressType == null && address.Mail.Street1 == null && address.Mail.Street2 == null
+                    && address.Mail.City == null && address.PostalCode == null && address.CountryRegion == null
+                    && address.Mail.StateProvince == null)
+                {
+                    contact.Addresses.Remove(address);
+                }
 
                 if (address.AddressType == null)
                 {

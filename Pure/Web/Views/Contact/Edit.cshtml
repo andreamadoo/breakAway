@@ -39,34 +39,40 @@
 
                 <input type="hidden" name="Addresses[@i].Id" value="@address.Id" class="id" />
                 <div>
-                    <label for="Addresses[@i].AddressType">Address Type :</label>
-                    <input type="text" name="Addresses[@i].AddressType" value="@address.AddressType" class="address-type" />
+                    <label for="Addresses[@i].AddressType" id="@address.Id" >Address Type :</label>
+                    <input type="text" name="Addresses[@i].AddressType" value="@address.AddressType" id="@address.Id" class="address-type" />
                 </div>
                 <div>
-                    <label for="Addresses[@i].Street1">Street 1 :</label>
-                    <input type="text" name="Addresses[@i].Street1" value="@address.Street1" class="street1" />
+                    <label for="Addresses[@i].Street1" id="@address.Id" >Street 1 :</label>
+                    <input type="text" name="Addresses[@i].Street1" value="@address.Street1" id="@address.Id" class="street1" />
                 </div>
                 <div>
-                    <label for="Addresses[@i].Street2">Street 2 :</label>
-                    <input type="text" name="Addresses[@i].Street2" value="@address.Street2" class="street2" />
+                    <label for="Addresses[@i].Street2" id="@address.Id" >Street 2 :</label>
+                    <input type="text" name="Addresses[@i].Street2" value="@address.Street2" id="@address.Id" class="street2" />
                 </div>
                 <div>
-                    <label for="Addresses[@i].City">City :</label>
-                    <input type="text" name="Addresses[@i].City" value="@address.City" class="city" />
+                    <label for="Addresses[@i].City" id="@address.Id" >City :</label>
+                    <input type="text" name="Addresses[@i].City" value="@address.City" id="@address.Id" class="city" />
                 </div>
 
                 <div>
-                    <label for="Addresses[@i].StateProvince">State Province :</label>
-                    <input type="text" name="Addresses[@i].StateProvince" value="@address.StateProvince" class="stateprovince" />
+                    <label for="Addresses[@i].StateProvince" id="@address.Id" >State Province :</label>
+                    <input type="text" name="Addresses[@i].StateProvince" value="@address.StateProvince" id="@address.Id" class="stateprovince" />
                 </div>
                 <div>
-                    <label for="Addresses[@i].PostalCode">Postal Code :</label>
-                    <input type="text" name="Addresses[@i].PostalCode" value="@address.PostalCode" class="postalcode" />
+                    <label for="Addresses[@i].PostalCode" id="@address.Id" >Postal Code :</label>
+                    <input type="text" name="Addresses[@i].PostalCode" value="@address.PostalCode" id="@address.Id" class="postalcode" />
                 </div>
                 <div>
-                    <label for="Addresses[@i].CountryRegion">Country Region :</label>
-                    <input type="text" name="Addresses[@i].CountryRegion" value="@address.CountryRegion" class="countryregion" />
+                    <label for="Addresses[@i].CountryRegion" id="@address.Id" >Country Region :</label>
+                    <input type="text" name="Addresses[@i].CountryRegion" value="@address.CountryRegion" id="@address.Id" class="countryregion" />
                 </div>
+                
+                <div>
+                    <input type="button" name="delete" value="Delete this Address &#8593" class="delete-button" id="@address.Id" onclick="removeAddress('@address.Id')" />
+                </div>
+                
+
             }
 
 
@@ -92,7 +98,8 @@
     function addAddress() {
 
         var elements = document.getElementsByClassName("id")
-        var count = elements.length
+        var count = elements.length;
+        var upArrow = '\u2191';
 
         var newAddressTypeLabel = document.createElement("label")
         var newStreet1Label = document.createElement("label")
@@ -109,6 +116,7 @@
         var newStateProvinceInput = document.createElement("input")
         var newPostalCodeInput = document.createElement("input")
         var newCountryRegionInput = document.createElement("input")
+        var newButtonDeleteInput = document.createElement("input")
 
         newAddressTypeLabel.setAttribute("for", "Addresses[ " + count + "].AddressType")
         newStreet1Label.setAttribute("for", "Addresses[ " + count + "].Street1")
@@ -125,6 +133,8 @@
         newStateProvinceLabel.innerHTML = "State Province :"
         newPostalCodeLabel.innerHTML = "Postal Code :"
         newCountryRegionLabel.innerHTML = "Country Region :"
+        newButtonDeleteInput.innerHTML = "Delete"
+
 
 
         newAddressTypeInput.setAttribute("class", "address-type")
@@ -134,6 +144,7 @@
         newStateProvinceInput.setAttribute("class", "stateprovince")
         newPostalCodeInput.setAttribute("class", "postalcode")
         newCountryRegionInput.setAttribute("class", "countryregion")
+        newButtonDeleteInput.setAttribute("class", "delete-button")
 
         newAddressTypeInput.setAttribute("name", "Addresses[" + count + "].AddressType")
         newStreet1Input.setAttribute("name", "Addresses[" + count + "].Street1")
@@ -142,6 +153,7 @@
         newStateProvinceInput.setAttribute("name", "Addresses[" + count + "].StateProvince")
         newPostalCodeInput.setAttribute("name", "Addresses[" + count + "].PostalCode")
         newCountryRegionInput.setAttribute("name", "Addresses[" + count + "].CountryRegion")
+        newButtonDeleteInput.setAttribute("name", "delete")
 
         newAddressTypeInput.setAttribute("type", "text")
         newStreet1Input.setAttribute("type", "text")
@@ -150,6 +162,9 @@
         newStateProvinceInput.setAttribute("type", "text")
         newPostalCodeInput.setAttribute("type", "text")
         newCountryRegionInput.setAttribute("type", "text")
+        newButtonDeleteInput.setAttribute("type", "button")
+        newButtonDeleteInput.setAttribute("value", "Delete this Address " + upArrow )
+
 
         document.getElementsByClassName("form")[0].append(newAddressTypeLabel)
         document.getElementsByClassName("form")[0].append(newAddressTypeInput)
@@ -172,11 +187,42 @@
         document.getElementsByClassName("form")[0].append(newCountryRegionLabel)
         document.getElementsByClassName("form")[0].append(newCountryRegionInput)
         document.getElementsByClassName("form")[0].append(document.createElement("br"))
+        document.getElementsByClassName("form")[0].append(newButtonDeleteInput)
+        document.getElementsByClassName("form")[0].append(document.createElement("br"))
 
         console.log(count);
-  
+        
+
     }
-  
 
- </script>
 
+</script>
+
+<script type="text/javascript">
+
+    function removeAddress(id) {
+
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+        document.getElementById(id).remove();
+
+        
+
+        
+        console.log(id);
+       
+    }
+
+</script>

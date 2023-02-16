@@ -42,7 +42,7 @@
 
             <div id="@(i)" class="wrap-div">
 
-
+                <input type="hidden" name="Addresses.Index" value="@i" />  
                 <input type="hidden" name="Addresses[@i].Id" value="@address.Id" class="id" />
                 <div class="wrap-address-type">
                     <label for="Addresses[@i].AddressType">Address Type :</label>
@@ -116,6 +116,7 @@
         var newPostalCodeLabel = document.createElement("label")
         var newCountryRegionLabel = document.createElement("label")
 
+        var newAddressIndexInput = document.createElement("input")
         var newAddressIdInput = document.createElement("input")
         var newAddressTypeInput = document.createElement("input")
         var newStreet1Input = document.createElement("input")
@@ -165,6 +166,8 @@
         newCountryRegionInput.setAttribute("class", "countryregion")
         newButtonDeleteInput.setAttribute("class", "delete-button")
 
+        newAddressIndexInput.setAttribute("value", count)
+        newAddressIndexInput.setAttribute("name", "Addresses.Index")
         newAddressIdInput.setAttribute("name", "Addresses[" + count + "].Id")
         newAddressTypeInput.setAttribute("name", "Addresses[" + count + "].AddressType")
         newStreet1Input.setAttribute("name", "Addresses[" + count + "].Street1")
@@ -186,6 +189,7 @@
         wrapCountryRegion.setAttribute("class", "wrap-country-region")
         wrapDeleteButton.setAttribute("class", "wrap-delete-button")
 
+        newAddressIndexInput.setAttribute("type", "hidden")
         newAddressIdInput.setAttribute("type","hidden")
         newAddressTypeInput.setAttribute("type", "text")
         newStreet1Input.setAttribute("type", "text")
@@ -200,6 +204,10 @@
 
 
         document.getElementsByClassName("form")[0].appendChild(innerDiv)
+
+        innerDiv.append(newAddressIndexInput)
+
+
         innerDiv.append(wrapAddressType)
         wrapAddressType.append(newAddressTypeLabel)
         wrapAddressType.append(newAddressTypeInput)

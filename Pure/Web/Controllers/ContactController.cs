@@ -32,15 +32,15 @@ namespace BreakAway.Controllers
             }
 
             var viewModel = new IndexViewModel();
-           
+
             viewModel.FirstName = firstName;
 
             viewModel.LastName = lastName;
 
             viewModel.AddDate = addDate;
-            
+
             viewModel.ModifiedDate = modifiedDate;
-     
+
             viewModel.Contacts = (from contact in _repository.Contacts
                                   select new ContactItem
                                   {
@@ -49,16 +49,16 @@ namespace BreakAway.Controllers
                                       LastName = contact.LastName,
                                       AddDate = contact.AddDate,
                                       ModifiedDate = contact.ModifiedDate,
-                                      
+
                                   }).ToArray();
-    
+
 
 
             if (!string.IsNullOrEmpty(firstName))
             {
-           
+
                 viewModel.Contacts = viewModel.Contacts.Where(i => i.FirstName.Contains(firstName)).ToArray();
-                
+
             }
 
             if (!string.IsNullOrEmpty(lastName))
@@ -123,18 +123,18 @@ namespace BreakAway.Controllers
                     CountryRegion = address.CountryRegion,
                     AddressType = address.AddressType
                 };
-               
+
                 addresses.Add(addressModel);
             }
 
             viewModel.Addresses = addresses;
 
-           
+
 
             return View(viewModel);
         }
 
-        
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -157,61 +157,61 @@ namespace BreakAway.Controllers
             contact.AddDate = model.AddDate;
             contact.ModifiedDate = DateTime.Now;
 
-                foreach (var addressModel in model.Addresses)
-                {
-
-                    var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
-
-                    if (address == null)
-                    {
-                        address = new Address
-                        {
-                            Mail = new Mail()
-                        };
-
-                        contact.Addresses.Add(address);
-                    }
-
-                    address.Mail.Street1 = addressModel.Street1;
-                    address.Mail.Street2 = addressModel.Street2;
-                    address.Mail.City = addressModel.City;
-                    address.PostalCode = addressModel.PostalCode;
-                    address.CountryRegion = addressModel.CountryRegion;
-                    address.Mail.StateProvince = addressModel.StateProvince;
-                    address.AddressType = addressModel.AddressType;
-                    address.ModifiedDate = DateTime.Now;
-
-
-
-                    if (address.AddressType == null)
-                    {
-                        return RedirectToAction("Edit", "Contact", new { message = " The Address Type is required!" });
-                    }
-
-                }
-
             var contactAddresses = contact.Addresses.ToArray();
             foreach (var realAddress in contactAddresses)
             {
-                foreach (var addressModel in model.Addresses)
+                var address = model.Addresses.FirstOrDefault(p => p.Id == realAddress.Id);
+
+                Console.WriteLine(realAddress.Id);
+
+
+                if (address == null)
                 {
-                    var address = model.Addresses.FirstOrDefault(p => p.Id == realAddress.Id);
-
-                    Console.WriteLine(realAddress.Id);
-
-
-                    if (address == null)
-                    {
-                        _repository.Addresses.Delete(realAddress);
-                    }
-
+                    _repository.Addresses.Delete(realAddress);
                 }
             }
 
+            foreach (var addressModel in model.Addresses)
+            {
+
+                var address = contact.Addresses.FirstOrDefault(p => p.Id == addressModel.Id);
+
+                if (address == null)
+                {
+                    address = new Address
+                    {
+                        Mail = new Mail()
+                    };
+
+                    contact.Addresses.Add(address);
+                }
+
+                address.Mail.Street1 = addressModel.Street1;
+                address.Mail.Street2 = addressModel.Street2;
+                address.Mail.City = addressModel.City;
+                address.PostalCode = addressModel.PostalCode;
+                address.CountryRegion = addressModel.CountryRegion;
+                address.Mail.StateProvince = addressModel.StateProvince;
+                address.AddressType = addressModel.AddressType;
+                address.ModifiedDate = DateTime.Now;
 
 
 
-                    _repository.Save();
+                if (address.AddressType == null)
+                {
+                    return RedirectToAction("Edit", "Contact", new { message = " The Address Type is required!" });
+                }
+
+            }
+
+
+            
+
+
+
+
+            _repository.Save();
+            //ModelState.Clear();
 
             return RedirectToAction("Edit", "Contact", new { id = contact.Id, message = "Changes saved successfully" });
         }
@@ -238,7 +238,7 @@ namespace BreakAway.Controllers
             {
                 return RedirectToAction("Add", "Contact", new { message = "Contact not created" });
             }
-            
+
 
             var contact = new Contact
             {
@@ -249,9 +249,10 @@ namespace BreakAway.Controllers
             };
 
 
-            
+
             _repository.Contacts.Add(contact);
             _repository.Save();
+            //ModelState.Clear();
 
             return RedirectToAction("index", "Contact", new { message = "Contact added successfully" });
         }
@@ -261,5 +262,5 @@ namespace BreakAway.Controllers
 
     }
 
-   
+
 }

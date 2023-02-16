@@ -9,7 +9,7 @@ namespace BreakAway.Models.Contact
 
     public class AddressModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public string Street1 { get; set; }
 

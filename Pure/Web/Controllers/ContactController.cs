@@ -6,12 +6,14 @@ using System.Web.Mvc;
 using BreakAway.Entities;
 using BreakAway.Models.Contact;
 
+
 namespace BreakAway.Controllers
 {
 
     public class ContactController : Controller
     {
         private readonly IRepository _repository;
+        
 
         public ContactController(IRepository repository)
         {
@@ -23,36 +25,9 @@ namespace BreakAway.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public ActionResult Index(string message, string firstName, string lastName, string addDate, string modifiedDate)
+
+        public void FilterValidation(IndexViewModel viewModel,string firstName, string lastName, string addDate, string modifiedDate)
         {
-            if (!string.IsNullOrEmpty(message))
-            {
-                ViewBag.message = message;
-            }
-
-            var viewModel = new IndexViewModel();
-
-            viewModel.FirstName = firstName;
-
-            viewModel.LastName = lastName;
-
-            viewModel.AddDate = addDate;
-
-            viewModel.ModifiedDate = modifiedDate;
-
-            viewModel.Contacts = (from contact in _repository.Contacts
-                                  select new ContactItem
-                                  {
-                                      Id = contact.Id,
-                                      FirstName = contact.FirstName,
-                                      LastName = contact.LastName,
-                                      AddDate = contact.AddDate,
-                                      ModifiedDate = contact.ModifiedDate,
-
-                                  }).ToArray();
-
-
 
             if (!string.IsNullOrEmpty(firstName))
             {
@@ -81,6 +56,54 @@ namespace BreakAway.Controllers
                 viewModel.Contacts = viewModel.Contacts.Where(i => i.ModifiedDate.ToString().Contains(modifiedDate)).ToArray();
 
             }
+
+
+
+        }
+
+        public void KeepSearchFilters(IndexViewModel viewModel, string firstName, string lastName, string addDate, string modifiedDate)
+        {
+
+            viewModel.FirstName = firstName;
+
+            viewModel.LastName = lastName;
+
+            viewModel.AddDate = addDate;
+
+            viewModel.ModifiedDate = modifiedDate;
+
+
+
+        }
+
+
+
+        [HttpGet]
+        public ActionResult Index(string message, string firstName, string lastName, string addDate, string modifiedDate)
+        {
+
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                ViewBag.message = message;
+            }
+
+            var viewModel = new IndexViewModel();
+
+            KeepSearchFilters(viewModel, firstName, lastName, addDate, modifiedDate);
+
+            viewModel.Contacts = (from contact in _repository.Contacts
+                                  select new ContactItem
+                                  {
+                                      Id = contact.Id,
+                                      FirstName = contact.FirstName,
+                                      LastName = contact.LastName,
+                                      AddDate = contact.AddDate,
+                                      ModifiedDate = contact.ModifiedDate,
+
+                                  }).ToArray();
+
+            FilterValidation(viewModel, firstName, lastName, addDate, modifiedDate);
 
             return View(viewModel);
         }

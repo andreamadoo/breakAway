@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using BreakAway.Entities;
 using BreakAway.Models.Contact;
+using BreakAway.Services;
 
 
 
@@ -14,6 +15,7 @@ namespace BreakAway.Controllers
     public class ContactController : Controller
     {
         private readonly IRepository _repository;
+        private readonly IFilterService _filterService;
         
 
         public ContactController(IRepository repository)
@@ -23,46 +25,16 @@ namespace BreakAway.Controllers
                 throw new ArgumentNullException("repository");
             }
 
+            _filterService = new FilterService();
+
             _repository = repository;
         }
 
 
-        public void FilterValidation(IndexViewModel viewModel,string firstName, string lastName, string addDate, string modifiedDate)
-        {
+       
+ 
 
-            if (!string.IsNullOrEmpty(firstName))
-            {
-
-                viewModel.Contacts = viewModel.Contacts.Where(i => i.FirstName.Contains(firstName)).ToArray();
-
-            }
-
-            if (!string.IsNullOrEmpty(lastName))
-            {
-
-                viewModel.Contacts = viewModel.Contacts.Where(i => i.LastName.Contains(lastName)).ToArray();
-
-            }
-
-            if (!string.IsNullOrEmpty(addDate))
-            {
-
-                viewModel.Contacts = viewModel.Contacts.Where(i => i.AddDate.ToString().Contains(addDate)).ToArray();
-
-            }
-
-            if (!string.IsNullOrEmpty(modifiedDate))
-            {
-
-                viewModel.Contacts = viewModel.Contacts.Where(i => i.ModifiedDate.ToString().Contains(modifiedDate)).ToArray();
-
-            }
-
-
-
-        }
-
-        public void KeepSearchFilters(IndexViewModel viewModel, string firstName, string lastName, string addDate, string modifiedDate)
+        private void KeepSearchFilters(IndexViewModel viewModel, string firstName, string lastName, string addDate, string modifiedDate)
         {
 
             viewModel.FirstName = firstName;
@@ -72,8 +44,6 @@ namespace BreakAway.Controllers
             viewModel.AddDate = addDate;
 
             viewModel.ModifiedDate = modifiedDate;
-
-
 
         }
 
@@ -104,7 +74,9 @@ namespace BreakAway.Controllers
 
                                   }).ToArray();
 
-            FilterValidation(viewModel, firstName, lastName, addDate, modifiedDate);
+            var filteredList = _filterService.FilterValidation(viewModel.Contacts.ToList(), firstName, lastName, addDate, modifiedDate);
+
+            viewModel.Contacts = filteredList.ToArray();
 
             return View(viewModel);
         }

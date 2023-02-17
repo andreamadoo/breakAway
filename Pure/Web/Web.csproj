@@ -214,6 +214,10 @@
       <Project>{650a80e6-1dba-4e72-b369-ec58bf37af06}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Services\Services.csproj">
+      <Project>{0f71cb70-c75b-4420-baa7-37abcf041679}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Storage\Storage.csproj">
       <Project>{2f42a4d9-3fce-4833-9934-dc7045bf471f}</Project>
       <Name>Storage</Name>

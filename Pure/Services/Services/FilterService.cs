@@ -10,36 +10,31 @@ namespace BreakAway.Services
     public class FilterService : IFilterService
     {
 
+        private readonly IFilter[] filters;
+
+        public FilterService()
+        {
+            filters = new IFilter[]
+            {
+                new FirstName(),
+                new LastName(),
+                new AddDate(),
+                new ModifiedDate()
+            };
+        }
+
         //MAKE THIS SOLID 
-        public List<ContactItem> FilterValidation(List<ContactItem> contactItem, string firstName, string lastName, string addDate, string modifiedDate)
+        public List<ContactItem> FilterValidation(List<ContactItem> contactItem, FilterModel filterModeldDate)
         {
 
-            if (!string.IsNullOrEmpty(firstName))
+
+
+           
+
+            foreach (var filter in filters)
             {
-
-                contactItem = contactItem.Where(i => i.FirstName.Contains(firstName)).ToList();
-
-            }
-
-            if (!string.IsNullOrEmpty(lastName))
-            {
-
-                contactItem = contactItem.Where(i => i.LastName.Contains(lastName)).ToList();
-
-            }
-
-            if (!string.IsNullOrEmpty(addDate))
-            {
-
-                contactItem = contactItem.Where(i => i.AddDate.ToString().Contains(addDate)).ToList();
-
-            }
-
-            if (!string.IsNullOrEmpty(modifiedDate))
-            {
-
-                contactItem = contactItem.Where(i => i.ModifiedDate.ToString().Contains(modifiedDate)).ToList();
-
+               
+               contactItem =  filter.FilterSearch(contactItem,filterModeldDate);
             }
 
             return contactItem;
@@ -49,4 +44,6 @@ namespace BreakAway.Services
         }
 
     }
+
+
 }

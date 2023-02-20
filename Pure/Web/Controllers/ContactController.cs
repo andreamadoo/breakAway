@@ -52,12 +52,22 @@ namespace BreakAway.Controllers
         [HttpGet]
         public ActionResult Index(string message, string firstName, string lastName, string addDate, string modifiedDate)
         {
-
+            //FILTERMODEL IN THE PARAMETERS
 
             if (!string.IsNullOrEmpty(message))
             {
                 ViewBag.message = message;
             }
+
+            var filterModelDate = new FilterModel
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                AddDate = addDate,
+                ModifiedDate = modifiedDate
+
+            };
+
 
             var viewModel = new IndexViewModel();
 
@@ -74,7 +84,7 @@ namespace BreakAway.Controllers
 
                                   }).ToArray();
 
-            var filteredList = _filterService.FilterValidation(viewModel.Contacts.ToList(), firstName, lastName, addDate, modifiedDate);
+            var filteredList = _filterService.FilterValidation(viewModel.Contacts.ToList(), filterModelDate);
 
             viewModel.Contacts = filteredList.ToArray();
 

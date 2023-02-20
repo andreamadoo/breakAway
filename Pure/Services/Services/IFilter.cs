@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace BreakAway.Services
 {
-    public interface IFilterService 
+    public interface IFilter
     {
 
-        List<ContactItem> FilterValidation(List<ContactItem> contactItem, FilterModel filterModeldDate);
-
+        List<ContactItem> FilterSearch(List<ContactItem> ContactItem, FilterModel filterModel);
 
     }
 }

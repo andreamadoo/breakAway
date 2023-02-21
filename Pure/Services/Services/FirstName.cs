@@ -8,16 +8,26 @@ namespace BreakAway.Services
 {
     public class FirstName : IFilter
     {
-
-        public List<ContactItem> FilterSearch(List<ContactItem> ContactItem, FilterModel filterModel)
+        //seperate methdos
+        public List<ContactItem> FilterSearch(List<ContactItem> contactItem, FilterModel filterModel)
         {
-            if (!string.IsNullOrEmpty(filterModel.FirstName))
+           
+
+            contactItem = contactItem.Where(i => i.FirstName.Contains(filterModel.FirstName)).ToList();
+
+            
+            return contactItem;
+        }
+
+        public bool FilterCheck(FilterModel filterModel)
+        {
+
+            if (filterModel != null)
             {
-
-                ContactItem = ContactItem.Where(i => i.FirstName.Contains(filterModel.FirstName)).ToList();
-
+                return (!string.IsNullOrEmpty(filterModel.FirstName));
             }
-            return ContactItem;
+            return false;
+
         }
 
     }

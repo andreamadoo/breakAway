@@ -18,14 +18,14 @@ namespace BreakAway.Controllers
         private readonly IFilterService _filterService;
         
 
-        public ContactController(IRepository repository)
+        public ContactController(IRepository repository, IFilterService filterService)
         {
             if (repository == null)
             {
                 throw new ArgumentNullException("repository");
             }
 
-            _filterService = new FilterService();
+            _filterService = filterService;
 
             _repository = repository;
         }
@@ -33,27 +33,13 @@ namespace BreakAway.Controllers
 
        
  
-
-        private void KeepSearchFilters(IndexViewModel viewModel, FilterModel filterModel)
-        {
-
-
-            viewModel.FirstName = filterModel.FirstName;
-
-            viewModel.LastName = filterModel.LastName;
-
-            viewModel.AddDate = filterModel.AddDate;
-
-            viewModel.ModifiedDate = filterModel.ModifiedDate;
-
-        }
-
+       
 
 
         [HttpGet]
-        public ActionResult Index(string message, FilterModel filterModel)
+        public ActionResult Index(string message, [Bind(Prefix = "Filter")]FilterModel filterModel)
         {
-            //FILTERMODEL IN THE PARAMETERS
+            
 
             if (!string.IsNullOrEmpty(message))
             {
@@ -63,8 +49,6 @@ namespace BreakAway.Controllers
             
       
             var viewModel = new IndexViewModel();
-
-            KeepSearchFilters(viewModel, filterModel);
 
             viewModel.Contacts = (from contact in _repository.Contacts
                                   select new ContactItem

@@ -10,6 +10,7 @@ namespace BreakAway.Services
     {
 
         List<ContactItem> FilterSearch(List<ContactItem> ContactItem, FilterModel filterModel);
+        bool FilterCheck(FilterModel filterModel);
 
     }
 }

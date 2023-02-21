@@ -12,35 +12,35 @@ namespace BreakAway.Services
 
         private readonly IFilter[] filters;
 
-        public FilterService()
+        public FilterService(IFilter[] filter)
         {
-            filters = new IFilter[]
+
+            if (filter == null)
             {
-                new FirstName(),
-                new LastName(),
-                new AddDate(),
-                new ModifiedDate()
-            };
+                throw new ArgumentNullException("filter");
+            }
+
+            filters = filter;
+
+
+       
         }
 
-        //MAKE THIS SOLID 
-        public List<ContactItem> FilterValidation(List<ContactItem> contactItem, FilterModel filterModeldDate)
+
+      
+        public List<ContactItem> FilterValidation(List<ContactItem> contactItem, FilterModel filterModel)
         {
-
-
-
-           
 
             foreach (var filter in filters)
             {
-               
-               contactItem =  filter.FilterSearch(contactItem,filterModeldDate);
+                if (filter.FilterCheck(filterModel))
+                {
+                    contactItem = filter.FilterSearch(contactItem, filterModel);
+                }
+
             }
 
             return contactItem;
-
-
-
         }
 
     }

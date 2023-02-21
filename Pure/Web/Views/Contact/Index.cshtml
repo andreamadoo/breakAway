@@ -11,10 +11,10 @@
 
 @using (Html.BeginForm("Index", "Contact", FormMethod.Get))
 {
-    @Html.TextBoxFor(m => m.FilterModel.FirstName)
-    @Html.TextBoxFor(m => m.FilterModel.LastName)
-    @Html.TextBoxFor(m => m.FilterModel.AddDate)
-    @Html.TextBoxFor(m => m.FilterModel.ModifiedDate)
+    @Html.TextBoxFor(m => m.Filter.FirstName)
+    @Html.TextBoxFor(m => m.Filter.LastName)
+    @Html.TextBoxFor(m => m.Filter.AddDate)
+    @Html.TextBoxFor(m => m.Filter.ModifiedDate)
     <input type="submit" name="submit" />
 }
 

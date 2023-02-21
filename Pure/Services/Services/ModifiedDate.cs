@@ -8,15 +8,23 @@ namespace BreakAway.Services
 {
     public class ModifiedDate : IFilter
     {
-        public List<ContactItem> FilterSearch(List<ContactItem> contactItem, FilterModel filterModeldDate)
+        public List<ContactItem> FilterSearch(List<ContactItem> contactItem, FilterModel filterModel)
         {
-            if (!string.IsNullOrEmpty(filterModeldDate.ModifiedDate))
-            {
+           
+            contactItem = contactItem.Where(i => i.ModifiedDate.ToString().Contains(filterModel.ModifiedDate)).ToList();
 
-                contactItem = contactItem.Where(i => i.ModifiedDate.ToString().Contains(filterModeldDate.ModifiedDate)).ToList();
-
-            }
+            
             return contactItem;
+        }
+
+        public bool FilterCheck(FilterModel filterModel)
+        {
+            if (filterModel != null)
+            {
+                return (!string.IsNullOrEmpty(filterModel.ModifiedDate));
+            }
+            return false;
+
         }
     }
 }

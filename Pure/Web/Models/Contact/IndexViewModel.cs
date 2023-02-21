@@ -11,6 +11,8 @@ namespace BreakAway.Models.Contact
     {
         public ContactItem[] Contacts { get; set; }
 
+        public FilterModel FilterModel { get; set; }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string AddDate { get; set; }

@@ -1,5 +1,4 @@
 ﻿@model BreakAway.Models.Contact.IndexViewModel
-
 @{
     ViewBag.Title = "Contacts";
 }
@@ -12,10 +11,10 @@
 
 @using (Html.BeginForm("Index", "Contact", FormMethod.Get))
 {
-    <input type="text" name="firstName" value="@Model.FirstName" />
-    <input type="text" name="lastName" value="@Model.LastName" />
-    <input type="text" name="addDate" value="@Model.AddDate" />
-    <input type="text" name="modifiedDate" value="@Model.ModifiedDate" />
+    @Html.TextBoxFor(m => m.FilterModel.FirstName)
+    @Html.TextBoxFor(m => m.FilterModel.LastName)
+    @Html.TextBoxFor(m => m.FilterModel.AddDate)
+    @Html.TextBoxFor(m => m.FilterModel.ModifiedDate)
     <input type="submit" name="submit" />
 }
 

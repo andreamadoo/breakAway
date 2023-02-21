@@ -34,23 +34,24 @@ namespace BreakAway.Controllers
        
  
 
-        private void KeepSearchFilters(IndexViewModel viewModel, string firstName, string lastName, string addDate, string modifiedDate)
+        private void KeepSearchFilters(IndexViewModel viewModel, FilterModel filterModel)
         {
 
-            viewModel.FirstName = firstName;
 
-            viewModel.LastName = lastName;
+            viewModel.FirstName = filterModel.FirstName;
 
-            viewModel.AddDate = addDate;
+            viewModel.LastName = filterModel.LastName;
 
-            viewModel.ModifiedDate = modifiedDate;
+            viewModel.AddDate = filterModel.AddDate;
+
+            viewModel.ModifiedDate = filterModel.ModifiedDate;
 
         }
 
 
 
         [HttpGet]
-        public ActionResult Index(string message, string firstName, string lastName, string addDate, string modifiedDate)
+        public ActionResult Index(string message, FilterModel filterModel)
         {
             //FILTERMODEL IN THE PARAMETERS
 
@@ -59,19 +60,11 @@ namespace BreakAway.Controllers
                 ViewBag.message = message;
             }
 
-            var filterModelDate = new FilterModel
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                AddDate = addDate,
-                ModifiedDate = modifiedDate
-
-            };
-
-
+            
+      
             var viewModel = new IndexViewModel();
 
-            KeepSearchFilters(viewModel, firstName, lastName, addDate, modifiedDate);
+            KeepSearchFilters(viewModel, filterModel);
 
             viewModel.Contacts = (from contact in _repository.Contacts
                                   select new ContactItem
@@ -84,7 +77,7 @@ namespace BreakAway.Controllers
 
                                   }).ToArray();
 
-            var filteredList = _filterService.FilterValidation(viewModel.Contacts.ToList(), filterModelDate);
+            var filteredList = _filterService.FilterValidation(viewModel.Contacts.ToList(), filterModel);
 
             viewModel.Contacts = filteredList.ToArray();
 

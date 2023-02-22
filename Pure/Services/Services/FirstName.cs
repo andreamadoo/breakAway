@@ -21,7 +21,7 @@ namespace BreakAway.Services
 
         public bool FilterCheck(FilterModel filterModel)
         {
-
+          
             if (filterModel != null)
             {
                 return (!string.IsNullOrEmpty(filterModel.FirstName));

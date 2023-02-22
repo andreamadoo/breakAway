@@ -32,9 +32,7 @@ namespace Tests
         public void FilterCheck_returns_false_if_filtermodel_is_null()
         {
             //Arrange
-            //var firstName = _fixture.Build<FirstName>().Create();
-
-
+           
             //Act
 
             var result = _sut.FilterCheck(null);
@@ -62,12 +60,12 @@ namespace Tests
         public void FilterCheck_returns_true_if_filtermodel_firstName_is_not_null()
         {
             //Arrange
-            _filterModel.FirstName = "ffff";
-            //I think here is where i should be using Autofixture but im not sure how
+            //_filterModel.FirstName = "ffff";
+            var test = _fixture.Create<FilterModel>();
        
             //Act
 
-            var result = _sut.FilterCheck(_filterModel);
+            var result = _sut.FilterCheck(test);
 
             //Assert
 
@@ -80,13 +78,10 @@ namespace Tests
             //Arrange
             var contactItem = new List<ContactItem>();
             
-
             //Act
-
             var result = _sut.FilterSearch(contactItem,null);
 
             //Assert
-
             Assert.AreEqual(result, contactItem);
         }
 
@@ -95,12 +90,12 @@ namespace Tests
         {
             //Arrange
             var contactItem = new List<ContactItem>();
-            _filterModel.FirstName = "FF";
-            //I think here is where i should be using Autofixture but im not sure how
+            var filterModelTest = _fixture.Create<FilterModel>();
+          
 
             //Act
 
-            var result = _sut.FilterSearch(contactItem, _filterModel);
+            var result = _sut.FilterSearch(contactItem, filterModelTest);
 
             //Assert
 

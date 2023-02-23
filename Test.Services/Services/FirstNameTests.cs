@@ -17,14 +17,14 @@ namespace Tests
         private IFixture _fixture;
         private IFilter _sut;
         private FilterModel _filterModel;
+        
 
         [SetUp]
         public void Initialize()
         {
             _fixture = new Fixture();
             _sut = new FirstName();
-            _filterModel = new FilterModel();
-
+            _filterModel = _fixture.Create<FilterModel>();
         }
 
 
@@ -41,15 +41,31 @@ namespace Tests
 
             Assert.That(result.Equals(false));
         }
-
+        //CHECK EMPTY
         [Test]
         public void FilterCheck_returns_false_if_filtermodel_firstName_is_null()
         {
             //Arrange
-  
+            var filterModelWithoutFirstName = _fixture.Build<FilterModel>().Without(i => i.FirstName).Create();
+
             //Act
 
-            var result = _sut.FilterCheck(_filterModel);
+            var result = _sut.FilterCheck(filterModelWithoutFirstName);
+
+            //Assert
+
+            Assert.That(result.Equals(false));
+        }
+
+        [Test]
+        public void FilterCheck_returns_false_if_filtermodel_firstName_is_empty()
+        {
+            //Arrange
+            var filterModelWithoutFirstName = _fixture.Build<FilterModel>().With(i => i.FirstName, "").Create();
+
+            //Act
+
+            var result = _sut.FilterCheck(filterModelWithoutFirstName);
 
             //Assert
 
@@ -60,7 +76,7 @@ namespace Tests
         public void FilterCheck_returns_true_if_filtermodel_firstName_is_not_null()
         {
             //Arrange
-            //_filterModel.FirstName = "ffff";
+        
             var test = _fixture.Create<FilterModel>();
        
             //Act
@@ -76,8 +92,8 @@ namespace Tests
         public void FilterSearch_returns_same_list_if_filemodel_is_null()
         {
             //Arrange
-            var contactItem = new List<ContactItem>();
-            
+            var contactItem = _fixture.Build<ContactItem>().CreateMany().ToList();
+
             //Act
             var result = _sut.FilterSearch(contactItem,null);
 
@@ -86,21 +102,45 @@ namespace Tests
         }
 
         [Test]
-        public void FilterSearch_returns_same_list_if_filemodel_is_not_null()
+        public void FilterSearch_returns_contacts_with_firstname_matching_filter()
         {
             //Arrange
-            var contactItem = new List<ContactItem>();
-            var filterModelTest = _fixture.Create<FilterModel>();
+            var contactItem = _fixture.Build<ContactItem>().With(i => i.FirstName, "Andre").CreateMany().ToList();
+            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.FirstName, "Andre").Create();
+            var help = new List<ContactItem>();
           
 
             //Act
 
-            var result = _sut.FilterSearch(contactItem, filterModelTest);
+            var result = _sut.FilterSearch(help, filterModelTest);
 
             //Assert
 
-            Assert.AreEqual(result, contactItem);
+            Assert.That(result.All(i => i.FirstName == "Andre"));
         }
+
+        [Test]
+        public void FilterSearch_does_not_returns_contacts_with_firstname_matching_filter()
+        {
+            //Arrange
+            var contactItem = _fixture.Build<ContactItem>().With(i => i.FirstName, "Andre").CreateMany().ToList();
+            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.FirstName, "Filipe").Create();
+            var help = new List<ContactItem>();
+
+
+            //Act
+
+            var result = _sut.FilterSearch(help, filterModelTest);
+
+            //Assert
+
+            Assert.That(result.Count == 0);
+        }
+
+        /*
+         * - We get back the contacts with firstname matching the filter  DONE
+         * - We don't get back contacts with firstname that does not match the filter   DONE
+         */
 
         [Test]
         public void FilterSearch_throws_ArgumentNullException_if_contactItem_is_null()
@@ -117,25 +157,6 @@ namespace Tests
             
             Assert.Throws<ArgumentNullException>(() => _sut.FilterSearch(null, _filterModel));
         }
-
-        [Test]
-        public void FilterSearch_throws_ArgumentNullException_if_contactItem_is_null_and_fileModel_Is_null()
-        {
-            //Arrange
-
-
-            //Act
-
-
-
-            //Assert
-
-
-            Assert.Throws<ArgumentNullException>(() => _sut.FilterSearch(null, null));
-        }
-
-
-
 
 
 

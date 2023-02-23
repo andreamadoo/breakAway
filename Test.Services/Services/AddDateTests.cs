@@ -105,15 +105,13 @@ namespace Tests
         public void FilterSearch_returns_contacts_with_adddate_matching_filter()
         {
             //Arrange
-            var datetime = DateTime.Now;
+            var datetime = _fixture.Create<DateTime>();
             var contactItem = _fixture.Build<ContactItem>().With(i => i.AddDate, datetime).CreateMany().ToList();
             var filterModelTest = _fixture.Build<FilterModel>().With(i => i.AddDate, datetime.ToString()).Create();
-            var help = new List<ContactItem>();
-
-
+           
             //Act
 
-            var result = _sut.FilterSearch(help, filterModelTest);
+            var result = _sut.FilterSearch(contactItem, filterModelTest);
 
             //Assert
 
@@ -124,16 +122,15 @@ namespace Tests
         public void FilterSearch_does_not_returns_contacts_with_adddate_matching_filter()
         {
             //Arrange
-            var datetime = DateTime.Now;
-            var datetime2 = DateTime.Now;
-            var contactItem = _fixture.Build<ContactItem>().With(i => i.AddDate, datetime).CreateMany().ToList();
-            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.AddDate, datetime2.ToString()).Create();
-            var help = new List<ContactItem>();
+     
+            var contactItem = _fixture.Build<ContactItem>().CreateMany().ToList();
+            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.AddDate, _fixture.Create<DateTime>().ToString()).Create();
 
+            Assume.That(contactItem.All(i => !i.AddDate.ToString().Equals(filterModelTest.AddDate)));
 
             //Act
 
-            var result = _sut.FilterSearch(help, filterModelTest);
+            var result = _sut.FilterSearch(contactItem, filterModelTest);
 
             //Assert
 

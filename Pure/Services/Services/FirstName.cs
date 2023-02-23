@@ -20,6 +20,7 @@ namespace BreakAway.Services
             {
                 return contactItem;
             }
+
             
 
             contactItem = contactItem.Where(i => i.FirstName.Contains(filterModel.FirstName)).ToList();

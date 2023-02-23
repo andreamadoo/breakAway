@@ -105,32 +105,33 @@ namespace Tests
         public void FilterSearch_returns_contacts_with_LastName_matching_filter()
         {
             //Arrange
-            var contactItem = _fixture.Build<ContactItem>().With(i => i.LastName, "Amado").CreateMany().ToList();
-            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.LastName, "Amado").Create();
-            var help = new List<ContactItem>();
+            var lastName = _fixture.Create<string>();
+            var contactItem = _fixture.Build<ContactItem>().With(i => i.LastName, lastName).CreateMany().ToList();
+            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.LastName, lastName).Create();
+           
 
 
             //Act
 
-            var result = _sut.FilterSearch(help, filterModelTest);
+            var result = _sut.FilterSearch(contactItem, filterModelTest);
 
             //Assert
 
-            Assert.That(result.All(i => i.LastName == "Amado"));
+            Assert.That(result.All(i => i.LastName == lastName));
         }
 
         [Test]
         public void FilterSearch_does_not_returns_contacts_with_lastname_matching_filter()
         {
             //Arrange
-            var contactItem = _fixture.Build<ContactItem>().With(i => i.LastName, "Amado").CreateMany().ToList();
-            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.LastName, "Silva").Create();
-            var help = new List<ContactItem>();
+            var contactItem = _fixture.Build<ContactItem>().CreateMany().ToList();
+            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.LastName, _fixture.Create<string>()).Create();
 
+            Assume.That(contactItem.All(i => !i.LastName.Equals(filterModelTest.LastName)));
 
             //Act
 
-            var result = _sut.FilterSearch(help, filterModelTest);
+            var result = _sut.FilterSearch(contactItem, filterModelTest);
 
             //Assert
 

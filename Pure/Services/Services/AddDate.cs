@@ -10,7 +10,17 @@ namespace BreakAway.Services
     {
         public List<ContactItem> FilterSearch(List<ContactItem> contactItem, FilterModel filterModel)
         {
-            
+
+            if (contactItem == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (filterModel == null)
+            {
+                return contactItem;
+            }
+
 
             contactItem = contactItem.Where(i => i.AddDate.ToString().Contains(filterModel.AddDate)).ToList();
 

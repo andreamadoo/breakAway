@@ -11,19 +11,19 @@ using BreakAway.Services;
 namespace Tests
 {
     [TestFixture]
-    public class FirstNameTests
+    public class LastNameTests
     {
 
         private IFixture _fixture;
         private IFilter _sut;
         private FilterModel _filterModel;
-        
+
 
         [SetUp]
         public void Initialize()
         {
             _fixture = new Fixture();
-            _sut = new FirstName();
+            _sut = new LastName();
             _filterModel = _fixture.Create<FilterModel>();
         }
 
@@ -32,7 +32,7 @@ namespace Tests
         public void FilterCheck_returns_false_if_filtermodel_is_null()
         {
             //Arrange
-           
+
             //Act
 
             var result = _sut.FilterCheck(null);
@@ -43,14 +43,14 @@ namespace Tests
         }
         //CHECK EMPTY
         [Test]
-        public void FilterCheck_returns_false_if_filtermodel_firstName_is_null()
+        public void FilterCheck_returns_false_if_filtermodel_lastName_is_null()
         {
             //Arrange
-            var filterModelWithoutFirstName = _fixture.Build<FilterModel>().Without(i => i.FirstName).Create();
+            var filterModelWithoutLastName = _fixture.Build<FilterModel>().Without(i => i.LastName).Create();
 
             //Act
 
-            var result = _sut.FilterCheck(filterModelWithoutFirstName);
+            var result = _sut.FilterCheck(filterModelWithoutLastName);
 
             //Assert
 
@@ -58,14 +58,14 @@ namespace Tests
         }
 
         [Test]
-        public void FilterCheck_returns_false_if_filtermodel_firstName_is_empty()
+        public void FilterCheck_returns_false_if_filtermodel_lastName_is_empty()
         {
             //Arrange
-            var filterModelWithEmptyFirstName = _fixture.Build<FilterModel>().With(i => i.FirstName, "").Create();
+            var filterModelWithEmptyLastName = _fixture.Build<FilterModel>().With(i => i.LastName, "").Create();
 
             //Act
 
-            var result = _sut.FilterCheck(filterModelWithEmptyFirstName);
+            var result = _sut.FilterCheck(filterModelWithEmptyLastName);
 
             //Assert
 
@@ -73,12 +73,12 @@ namespace Tests
         }
 
         [Test]
-        public void FilterCheck_returns_true_if_filtermodel_firstName_is_not_null()
+        public void FilterCheck_returns_true_if_filtermodel_lastName_is_not_null()
         {
             //Arrange
-        
+
             var test = _fixture.Create<FilterModel>();
-       
+
             //Act
 
             var result = _sut.FilterCheck(test);
@@ -95,20 +95,20 @@ namespace Tests
             var contactItem = _fixture.Build<ContactItem>().CreateMany().ToList();
 
             //Act
-            var result = _sut.FilterSearch(contactItem,null);
+            var result = _sut.FilterSearch(contactItem, null);
 
             //Assert
             Assert.AreEqual(result, contactItem);
         }
 
         [Test]
-        public void FilterSearch_returns_contacts_with_firstname_matching_filter()
+        public void FilterSearch_returns_contacts_with_LastName_matching_filter()
         {
             //Arrange
-            var contactItem = _fixture.Build<ContactItem>().With(i => i.FirstName, "Andre").CreateMany().ToList();
-            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.FirstName, "Andre").Create();
+            var contactItem = _fixture.Build<ContactItem>().With(i => i.LastName, "Amado").CreateMany().ToList();
+            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.LastName, "Amado").Create();
             var help = new List<ContactItem>();
-          
+
 
             //Act
 
@@ -116,15 +116,15 @@ namespace Tests
 
             //Assert
 
-            Assert.That(result.All(i => i.FirstName == "Andre"));
+            Assert.That(result.All(i => i.LastName == "Amado"));
         }
 
         [Test]
-        public void FilterSearch_does_not_returns_contacts_with_firstname_matching_filter()
+        public void FilterSearch_does_not_returns_contacts_with_lastname_matching_filter()
         {
             //Arrange
-            var contactItem = _fixture.Build<ContactItem>().With(i => i.FirstName, "Andre").CreateMany().ToList();
-            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.FirstName, "Filipe").Create();
+            var contactItem = _fixture.Build<ContactItem>().With(i => i.LastName, "Amado").CreateMany().ToList();
+            var filterModelTest = _fixture.Build<FilterModel>().With(i => i.LastName, "Silva").Create();
             var help = new List<ContactItem>();
 
 
@@ -150,11 +150,11 @@ namespace Tests
 
             //Act
 
-           
+
 
             //Assert
 
-            
+
             Assert.Throws<ArgumentNullException>(() => _sut.FilterSearch(null, _filterModel));
         }
 

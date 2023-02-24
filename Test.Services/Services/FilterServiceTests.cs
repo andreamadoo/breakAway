@@ -163,14 +163,19 @@ namespace Tests
             bool hey = true;
             foreach (var mockfilter in _mockFilter)
             {
-                mockfilter.Setup(m => m.FilterCheck(filterModel)).Returns(!hey);
+                mockfilter.Setup(m => m.FilterCheck(filterModel)).Returns(hey);
             };
 
             //Act
             var result = _sut.FilterValidation(contactItem, filterModel);
 
             //Assert
-            Assert.Pass();
+            int i = 0;
+            foreach (var mockfilter in _mockFilter)
+            {
+                mockfilter.Verify(m => m.FilterSearch(It.IsAny<List<ContactItem>>(), filterModel), Times.Once());
+            };
+            Assert.That(result != contactItem);
 
 
         }

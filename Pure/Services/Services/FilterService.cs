@@ -40,7 +40,7 @@ namespace BreakAway.Services
             {
                 return contactItem;
             }
-
+            
             foreach (var filter in filters)
             {
                 if (filter.FilterCheck(filterModel))

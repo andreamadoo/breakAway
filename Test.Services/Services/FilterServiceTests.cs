@@ -18,12 +18,14 @@ namespace Tests
         private IFixture _fixture;
         private IFilterService _sut;
         private Mock<IFilter>[] _mockFilter;
-        
+        private FilterModel _filterModel;
+
 
         [SetUp]
         public void Initialize()
         {
             _fixture = new Fixture();
+            _filterModel = _fixture.Create<FilterModel>();
             _mockFilter = new[]
             {
                 new Mock<IFilter>(),
@@ -46,7 +48,7 @@ namespace Tests
 
 
         [Test]
-        public void FilterCheck_returns_false_if_filtermodel_is_null()
+        public void FilterValidation_throws_ArgumentNullException_if_contactitems_is_null()
         {
             //Arrange
 
@@ -57,7 +59,53 @@ namespace Tests
             //Assert
 
             //Assert.That(result.Equals(false));
-            Assert.Pass();
+            Assert.Throws<ArgumentNullException>(() => _sut.FilterValidation(null, _filterModel));
+       
+        }
+
+        [Test]
+        public void FilterValidation_returns_same_list_if_filemodel_is_null()
+        {
+            //Arrange
+            var contactItem = _fixture.Build<ContactItem>().CreateMany().ToList();
+
+            //Act
+            var result = _sut.FilterValidation(contactItem, null);
+
+            //Assert
+            Assert.AreEqual(result, contactItem);
+        }
+
+        [Test]
+        public void FilterValidation_returns_same_list_if_filemodel_firstname_is_null()
+        {
+            //Arrange
+            var filterModelWithoutFirstName = _fixture.Build<FilterModel>().Without(i => i.FirstName).Create();
+            var contactItem = _fixture.Build<ContactItem>().CreateMany().ToList();
+
+            //Act
+            var result = _sut.FilterValidation(contactItem, filterModelWithoutFirstName);
+
+            //Assert
+            Assert.AreEqual(result, contactItem);
+        }
+
+        [Test]
+        public void FilterValidation_returns_same_list_if_filemodel_firstname_is_empty()
+        {
+            //Arrange
+
+            //maybe here im suppose to be using array of filters instead of creating a filtermodel like this?
+            //repetitive tests not sure if correct?
+
+            var filterModelWithEmptyFirstName = _fixture.Build<FilterModel>().With(i => i.FirstName, "").Create();
+            var contactItem = _fixture.Build<ContactItem>().CreateMany().ToList();
+
+            //Act
+            var result = _sut.FilterValidation(contactItem, filterModelWithEmptyFirstName);
+
+            //Assert
+            Assert.AreEqual(result, contactItem);
         }
     }
 }

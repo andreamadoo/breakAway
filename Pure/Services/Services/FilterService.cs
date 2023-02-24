@@ -31,6 +31,16 @@ namespace BreakAway.Services
         public List<ContactItem> FilterValidation(List<ContactItem> contactItem, FilterModel filterModel)
         {
 
+            if (contactItem == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (filterModel == null)
+            {
+                return contactItem;
+            }
+
             foreach (var filter in filters)
             {
                 if (filter.FilterCheck(filterModel))

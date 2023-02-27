@@ -155,15 +155,20 @@ namespace Tests
         }
 
         [Test]
-        public void FilterValidation_callsback_to_previous_filter_list()
+        public void FilterValidation_invokes_FilterSearch_with_returned_contactItems_of_previous_filter()
         {
             //Arrange
             var filterModel = _fixture.Create<FilterModel>();
             var contactItem = _fixture.CreateMany<ContactItem>().ToList();
             bool hey = true;
+            var filterInputs = new List<List<ContactItem>>() { contactItem };
+
             foreach (var mockfilter in _mockFilter)
             {
                 mockfilter.Setup(m => m.FilterCheck(filterModel)).Returns(hey);
+                var filterResult = _fixture.CreateMany<ContactItem>().ToList();
+                mockfilter.Setup(m => m.FilterSearch(It.IsAny<List<ContactItem>>(), filterModel)).Returns(filterResult);
+                filterInputs.Add(filterResult);
             };
 
             //Act
@@ -173,9 +178,11 @@ namespace Tests
             int i = 0;
             foreach (var mockfilter in _mockFilter)
             {
-                mockfilter.Verify(m => m.FilterSearch(It.IsAny<List<ContactItem>>(), filterModel), Times.Once());
+                
+                mockfilter.Verify(m => m.FilterSearch(filterInputs[i], filterModel), Times.Once());
+                i++;
             };
-            Assert.That(result != contactItem);
+            //Assert.That(result != contactItem);
 
 
         }
@@ -187,16 +194,25 @@ namespace Tests
             var filterModel = _fixture.Create<FilterModel>();
             var contactItem = _fixture.CreateMany<ContactItem>().ToList();
             bool hey = true;
+            var filterOutput = new List<List<ContactItem>>() { contactItem };
             foreach (var mockfilter in _mockFilter)
             {
-                mockfilter.Setup(m => m.FilterCheck(filterModel)).Returns(!hey);
+                mockfilter.Setup(m => m.FilterCheck(filterModel)).Returns(hey);
+                var filterResult = _fixture.CreateMany<ContactItem>().ToList();
+                mockfilter.Setup(m => m.FilterSearch(It.IsAny<List<ContactItem>>(), filterModel)).Returns(filterResult);
+                filterOutput.Add(filterResult);
             };
 
             //Act
             var result = _sut.FilterValidation(contactItem, filterModel);
 
             //Assert
-            Assert.Pass();
+          
+
+            Assert.That(filterOutput.LastOrDefault() == result);
+               
+            
+         
 
 
         }

@@ -203,15 +203,20 @@ namespace Tests
                 filterOutput.Add(filterResult);
             };
 
+            var expected = _fixture.CreateMany<ContactItem>().ToList();
+            var lastFilter = _mockFilter.Last();
+            lastFilter.Setup(m => m.FilterSearch(It.IsAny<List<ContactItem>>(), filterModel)).Returns(expected);
+
+
             //Act
             var result = _sut.FilterValidation(contactItem, filterModel);
 
             //Assert
           
 
-            Assert.That(filterOutput.LastOrDefault() == result);
-               
-            
+            //Assert.That(filterOutput.LastOrDefault() == result);
+
+            Assert.That(result, Is.EqualTo(expected));
          
 
 
